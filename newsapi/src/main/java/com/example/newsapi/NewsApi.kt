@@ -5,12 +5,17 @@ import com.example.newsapi.models.Article
 import com.example.newsapi.models.Languages
 import com.example.newsapi.models.Response
 import com.example.newsapi.models.SortBy
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import com.skydoves.retrofit.adapters.result.ResultCallAdapterFactory
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.create
 import retrofit2.http.GET
 import retrofit2.http.Query
 import java.util.Date
+
 
 interface NewsApi {
     /**
@@ -25,23 +30,28 @@ interface NewsApi {
         @Query("sortBy") sortBy: SortBy?= null,
         @Query("pageSize") @IntRange(from = 0, to = 100) pageSize: Int = 100,
         @Query("page") @IntRange(from = 0, to = 100) page: Int = 1,
-    ):Response<Article>
+    ):Result<Response<Article>>
 }
 
 fun NewsApi(
     baseUrl: String,
     okHttpClient: OkHttpClient? = null,
+    json: Json.Default = Json,
 ): NewsApi {
-    val retrofit = retrofit(baseUrl, okHttpClient)
+    val retrofit = retrofit(baseUrl, okHttpClient, json)
     return retrofit.create()
 }
 
 private fun retrofit(
     baseUrl: String,
     okHttpClient: OkHttpClient?,
+    json: Json.Default,
 ): Retrofit {
+    val jsonConverter = json.asConverterFactory(MediaType.get("application/json"))
     return Retrofit.Builder()
         .baseUrl(baseUrl)
+        .addConverterFactory(jsonConverter)
+        .addCallAdapterFactory(ResultCallAdapterFactory.create())
         .run { if (okHttpClient != null) client(okHttpClient) else this}
         .build()
 }

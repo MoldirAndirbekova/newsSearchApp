@@ -1,12 +1,15 @@
 plugins {
     id("java-library")
     id("org.jetbrains.kotlin.jvm")
-    kotlin("plugin.serialization") version "1.9.22"
+//    id("org.jetbrains.kotlin.multiplatform") version "1.9.22"
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.22"
+//    kotlin("jvm") version "1.9.22"
+    id("kotlinx-serialization")
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_7
-    targetCompatibility = JavaVersion.VERSION_1_7
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
@@ -14,4 +17,6 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
     implementation("androidx.annotation:annotation:1.7.1")
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:1.6.3")
+    implementation ("com.github.skydoves:retrofit-adapters-result:1.0.9")
 }
