@@ -5,6 +5,7 @@ import com.example.newsapi.models.Article
 import com.example.newsapi.models.Languages
 import com.example.newsapi.models.Response
 import com.example.newsapi.models.SortBy
+import com.example.newsapi.utils.TimeApiKeyInterceptor
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.skydoves.retrofit.adapters.result.ResultCallAdapterFactory
 import kotlinx.serialization.json.Json
@@ -35,24 +36,32 @@ interface NewsApi {
 
 fun NewsApi(
     baseUrl: String,
+    apiKey: String,
     okHttpClient: OkHttpClient? = null,
     json: Json.Default = Json,
 ): NewsApi {
-    val retrofit = retrofit(baseUrl, okHttpClient, json)
+    val retrofit = retrofit(baseUrl, apiKey, okHttpClient, json)
     return retrofit.create()
 }
 
 private fun retrofit(
     baseUrl: String,
+    apiKey: String,
     okHttpClient: OkHttpClient?,
     json: Json.Default,
 ): Retrofit {
     val jsonConverter = json.asConverterFactory(MediaType.get("application/json"))
+
+    val modifiedOkHttpClient:OkHttpClient = (okHttpClient?.newBuilder() ?: OkHttpClient.Builder())
+        .addInterceptor(TimeApiKeyInterceptor(apiKey))
+        .build()
+
+
     return Retrofit.Builder()
         .baseUrl(baseUrl)
         .addConverterFactory(jsonConverter)
         .addCallAdapterFactory(ResultCallAdapterFactory.create())
-        .run { if (okHttpClient != null) client(okHttpClient) else this}
+        .client(modifiedOkHttpClient)
         .build()
 }
 
