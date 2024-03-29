@@ -1,6 +1,8 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -56,7 +58,17 @@ dependencies {
 
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
+    implementation("com.google.dagger:hilt-android:2.44")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
     implementation(project(":news-data"))
+
+    implementation("com.google.dagger:hilt-android:2.44")
+
+    kapt("com.google.dagger:hilt-compiler:2.44")
+    // https://mvnrepository.com/artifact/jakarta.inject/jakarta.inject-api
+    implementation("jakarta.inject:jakarta.inject-api:2.0.1")
+    implementation("com.google.dagger:dagger:2.x")
+    annotationProcessor("com.google.dagger:dagger-compiler:2.x")
+
 }
