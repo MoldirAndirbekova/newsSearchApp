@@ -15,15 +15,15 @@ import javax.inject.Provider
 internal class NewsMainViewModel @Inject constructor(
     getAllArticlesUseCase: Provider<GetAllArticlesUseCase>
 ): ViewModel() {
-    val state: StateFlow<Any> = getAllArticlesUseCase.get().invoke()
+    val state: StateFlow<Any> = getAllArticlesUseCase.get().invoke(query = "android")
         .map { it.toState() }
         .stateIn(viewModelScope, SharingStarted.Lazily, State.None)
 }
 private fun RequestResult<List<ArticleUI>>.toState(): State {
     return when(this) {
-        is RequestResult.Error -> State.Error()
+        is RequestResult.Error -> State.Error(data)
         is RequestResult.InProgress -> State.Loading(data)
-        is RequestResult.Success -> State.Success(checkNotNull(data))
+        is RequestResult.Success -> State.Success(data)
     }
 }
 

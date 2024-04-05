@@ -10,13 +10,19 @@ import com.example.news.data.model.Article as DataArticle
 
 internal class GetAllArticlesUseCase @Inject constructor(private val repository: ArticlesRepository) {
 
-    operator fun invoke(): Flow<RequestResult<List<ArticleUI>>> {
-        return repository.getAll()
+    operator fun invoke(query: String): Flow<RequestResult<List<ArticleUI>>> {
+        return repository.getAll(query)
             .map { requestResult ->
                 requestResult.map { articles -> articles.map { it.toUIArticle() } }
             }
     }
 }
 private fun DataArticle.toUIArticle(): ArticleUI {
-    TODO("Not yet implemented")
+    return ArticleUI(
+        id = id,
+        title = title,
+        description = description,
+        imageUrl = urlToImage,
+        url = url
+    )
 }

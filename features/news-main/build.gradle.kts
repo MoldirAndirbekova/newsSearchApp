@@ -36,7 +36,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.10"
     }
 }
 
@@ -58,17 +58,17 @@ dependencies {
 
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
-    implementation("com.google.dagger:hilt-android:2.44")
+    implementation("com.google.dagger:hilt-android:2.51")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
     implementation(project(":news-data"))
 
-    implementation("com.google.dagger:hilt-android:2.44")
+    implementation("com.google.dagger:hilt-android:2.51")
 
-    kapt("com.google.dagger:hilt-compiler:2.44")
+    kapt("com.google.dagger:hilt-compiler:2.51")
     // https://mvnrepository.com/artifact/jakarta.inject/jakarta.inject-api
     implementation("jakarta.inject:jakarta.inject-api:2.0.1")
-    implementation("com.google.dagger:dagger:2.x")
-    annotationProcessor("com.google.dagger:dagger-compiler:2.x")
+    implementation("com.google.dagger:dagger:2.51.1")
+    annotationProcessor("com.google.dagger:dagger-compiler:2.51.1")
 
 }
